@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Blog</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../css/bootstrap-tokenfield.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/editormd.min.css" rel="stylesheet">
+</head>
+<body>
+<header class="row">
+    <div class="col-md-2 col-md-offset-1 row logo"><a href="/index">Spring简易博客</a></div>
+    <div class="col-md-5 col-md-offset-4 navigation">
+        <ul class="row">
+            <li class="col-md-2"><a id="home" href="/index"><i class="fa fa-home" aria-hidden="true"></i>Home</a></li>
+            <li class="col-md-2"><a id="project" href="/archive"><i class="fa fa-server" aria-hidden="true"></i>Archive</a></li>
+            <li class="col-md-2"><a id="life" href="/about"><i class="fa fa-heart" aria-hidden="true"></i>About</a></li>
+            <li class="col-md-2"><a id="about" href="/links"><i class="fa fa-th-large" aria-hidden="true"></i>Links</a></li>
+
+            #if($login > 0)
+            <li class="col-md-2"> $username </li>
+            <li class="col-md-2"><a id="logout" href="/logout">logout</a></li>
+            #else
+            <li class="col-md-2"><a id="login" href="/in">login</a></li>
+            #end
+
+            #if($create > 0)
+            <li class="col-md-2"><a id="create" href="/create"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></li>
+            #end
+        </ul>
+    </div>
+</header>

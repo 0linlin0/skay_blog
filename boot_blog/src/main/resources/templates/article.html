@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blog</title>
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <link href="../css/font-awesome.min.css" rel="stylesheet"/>
+  <link href="../css/bootstrap-tokenfield.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
+  <link href="../css/editormd.min.css" rel="stylesheet">
+</head>
+<body>
+<header class="row">
+  <div class="col-md-2 col-md-offset-2 row logo"><a href="/index">tuzhenyu</a></div>
+  <div class="col-md-5 col-md-offset-3 navigation">
+    <ul class="row">
+      <li class="col-md-2"><a id="home" href="/index"><i class="fa fa-home" aria-hidden="true"></i>Home</a></li>
+      <li class="col-md-2"><a id="project" href="/archive"><i class="fa fa-server" aria-hidden="true"></i>Archive</a></li>
+      <li class="col-md-2"><a id="life" href="/about"><i class="fa fa-heart" aria-hidden="true"></i>About</a></li>
+      <li class="col-md-2"><a id="about" href="/links"><i class="fa fa-th-large" aria-hidden="true"></i>Links</a></li>
+      #if($create > 0)
+      <li class="col-md-2"><a id="create" href="/create"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></li>
+      #end
+    </ul>
+  </div>
+</header>
+  <div class="articleContant">
+    <div class="wrapper row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8 row articleShow">
+        <h1>$!{article.title}</h1>
+        <div class="articleFooter articleHead">
+          <ul>
+            <li><i class="fa fa-calendar fa-1x" aria-hidden="true"></i><span>$date.format('yyyy-MM-dd', $!{article.createdDate})</span></li>
+            <li><i class="fa fa-eye" aria-hidden="true"></i><span>$!{articleClickCount}</span></li>
+            <li><i class="fa fa-list fa-1x" aria-hidden="true"></i><span>$!{article.category}</span></li>
+            <li><i class="fa fa-tags fa-1x" aria-hidden="true"></i>
+              #foreach($tag in $tags)
+              <span>$!{tag.name}</span>
+              #end
+            </li>
+          </ul>
+        </div>
+        <hr>
+        <article class="article">$!{article.content}</article>
+        <hr>
+        <div class="likeWrapper row">
+          <div class="col-md-3 col-md-offset-5 likeDisLike">
+            <div class="like">
+              #if($liked > 0)
+              <div><a style="color:#337ab7;"><i class="fa fa-thumbs-o-up fa-3x" aria-hidden="true"></i></a></div>
+              #else
+              <div><a href="/like/$!{article.id}"><i class="fa fa-thumbs-o-up fa-3x" aria-hidden="true"></i></a></div>
+              #end
+              <div class="likeCount">赞($!{likeCount})</div>
+            </div>
+            <div class="dislike">
+              #if($liked < 0)
+              <div><a style="color:#337ab7;"><i class="fa fa-thumbs-o-down fa-3x" aria-hidden="true"></i></a></div>
+              #else
+              <div><a href="/dislike/$!{article.id}"><i class="fa fa-thumbs-o-down fa-3x" aria-hidden="true"></i></a></div>
+              #end
+              <div class="disLikeCount">踩($!{dislikeCount})</div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="title"><i class="fa fa-comment-o fa-2x" aria-hidden="true"></i><span>已有$!{commentsCount}条评论</span></div>
+        <hr>
+        <div class="commentList">
+          <ul>
+            #foreach($vo in $vos)
+            <li>
+              <div class="comment">
+                <div class="commentTop row">
+                  <div class="commentLeft col-md-1">
+                    <div class="photo"><a href=""><img src="$!{vo.user.headUrl}" alt=""></a></div>
+                    <div class="comment-author">$!{vo.user.name}</div>
+                  </div>
+                  <div class="commentContent col-md-9"><span>$!{vo.comment.content}</span></div>
+                </div>
+                <div class="commentFooter">
+                  <div class="commentDate"><span>发布于 $date.format('yyyy-MM-dd HH:mm:ss', $!{vo.comment.createdDate})</span></div>
+                  <div class="answer"><a href="">回复</a></div>
+                </div>
+              </div>
+            </li>
+            <hr>
+            #end
+          </ul>
+        </div>
+        <div class="title"><i class="fa fa-edit fa-2x" aria-hidden="true"></i><span>添加新评论</span></div>
+        <hr>
+        <div class="commentWapper row">
+          <div class="editComment col-md-11">
+            <form action="/addComment/$!{article.id}"  method = "get">
+              <textarea name="content" id="content" style="font-style: italic;width:100%;height: 115px"></textarea>
+              <button  type="submit" class="btn btn-default">提交评论</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+#parse("footer.html")

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<div>
+    <h3><a href="#" onclick="article()">文章管理</a></h3>
+    <table border="1"id="article">
+
+    </table>
+</div>
+
+<div>
+    <h3><a href="#" onclick="user()">用户管理</a></h3>
+    <table border="1" id="user">
+
+    </table>
+</div>
+
+<div>
+    <h3><a href="#" onclick="comment()">评论管理</a></h3>
+    <table border="1" id="comment">
+
+    </table>
+</div>
+<script>
+    window.onload=function() {
+        // article();
+        // user();
+        // comment();
+
+    }
+
+    function article() {
+        var url = document.location.toString();
+        var articles_url = url.substring(0,url.indexOf("admin"))+"/admin?action=admin_article&noname=list";
+        var httpRequest = new XMLHttpRequest();//第一步：建立所需的对象
+        httpRequest.open('POST', articles_url, true);//第二步：打开连接  将请求参数写在url中  ps:"./Ptest.php?name=test&nameone=testone"
+        httpRequest.send();//第三步：发送请求  将请求参数写在URL中
+        /**
+         * 获取数据后的处理程序
+         */
+        httpRequest.onreadystatechange = function () {
+            if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                var result = httpRequest.responseText;//获取到json字符串，还需解析
+                var obj = JSON.parse(result);
+                var i = 1;
+                for (var key in obj){
+                    var id = key;
+                    var title = obj[key];
+                    document.getElementById('article').innerHTML += "<tr>\n" +
+                        "            <td>"+id+"</td>\n" +
+                        "            <td>"+title+"</td>\n" +
+                        "            <td><a href='./add.html'>add</a></td>\n" +
+                        "            <td><a href='./change.html?id="+id+"'>change</a></td>\n" +
+                        "        </tr>";
+                    i = i+1
+                }
+            }
+        };
+    }
+
+    function user() {
+        var url = document.location.toString();
+        var user_url = url.substring(0,url.indexOf("admin"))+"/admin?action=admin_user&noname=list";
+        var httpRequest = new XMLHttpRequest();//第一步：建立所需的对象
+        httpRequest.open('POST', user_url, true);//第二步：打开连接  将请求参数写在url中  ps:"./Ptest.php?name=test&nameone=testone"
+        httpRequest.send();//第三步：发送请求  将请求参数写在URL中
+        /**
+         * 获取数据后的处理程序
+         */
+        httpRequest.onreadystatechange = function () {
+            if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                var result = httpRequest.responseText;//获取到json字符串，还需解析
+                var obj = JSON.parse(result);
+                var i = 1;
+                for (var key in obj){
+                    var id = key.substring(0,1);
+                    var username = key.substring(2);
+                    var email = key[obj];
+                    document.getElementById('user').innerHTML += "<tr>\n" +
+                        "            <td>"+id+"</td>\n" +
+                        "            <td>"+username+"</td>\n" +
+                        "            <td>"+email+"</td>\n" +
+                        "            <td><a href='./admin?action=admin_user&noname=del&id='"+id+">del</a></td>\n" +
+                        "        </tr>";
+                    i = i+1
+                }
+            }
+        };
+    }
+
+    function comment() {
+        var url = document.location.toString();
+        var user_url = url.substring(0,url.indexOf("admin"))+"/admin?action=admin_comment&noname=list";
+        var httpRequest = new XMLHttpRequest();//第一步：建立所需的对象
+        httpRequest.open('POST', user_url, true);//第二步：打开连接  将请求参数写在url中  ps:"./Ptest.php?name=test&nameone=testone"
+        httpRequest.send();//第三步：发送请求  将请求参数写在URL中
+        /**
+         * 获取数据后的处理程序
+         */
+        httpRequest.onreadystatechange = function () {
+            if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                var result = httpRequest.responseText;//获取到json字符串，还需解析
+                var obj = JSON.parse(result);
+                var i = 1;
+                for (var key in obj){
+                    var id = key;
+                    alert(key[obj]);
+                    var username = key[obj].substring(0,key[obj].indexOf("*")-1);
+                    var content = key[obj].substring(key[obj].indexOf("*")+1);
+                    document.getElementById('comment').innerHTML += "<tr>\n" +
+                        "            <td>"+id+"</td>\n" +
+                        "            <td>"+username+"</td>\n" +
+                        "            <td>"+content+"</td>\n" +
+                        "            <td><a href='./admin?action=admin_user&noname=del&id='"+id+">del</a></td>\n" +
+                        "        </tr>";
+                    i = i+1
+                }
+            }
+        };
+    }
+</script>
+
+</body>
+</html>

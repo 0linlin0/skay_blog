@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <!--    我的注释 扫描controller下的组件 -->
+    <context:component-scan base-package="controller"/>
+    <!--    我的注释 这里是用来寻找service-->
+    <context:component-scan base-package="service" />
+    <!--    我的注释 这里是用来寻找dao-->
+    <context:component-scan base-package="repository" />
+    <!--    我的注释 这里是用来寻找过滤器-->
+    <context:component-scan base-package="validator" />
+
+    <!--    我的注释 这里是视图解析器-->
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/page/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!--    配置消息属性文件 -->
+    <bean id="messageSource"
+          class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="/WEB-INF/resource/errorMessages.properties" />
+    </bean>
+
+    <mvc:interceptors>
+        <!-- 配置一个全局拦截器，拦截所有请求 -->
+        <!--<bean class="interceptor.TestInterceptor" />-->
+        <mvc:interceptor>
+            <!-- 配置拦截器作用的路径 -->
+            <mvc:mapping path="/**"/>
+            <!--定义在<mvc:interceptor>元素中，表示匹配指定路径的请求才进行拦截-->
+            <bean class="interceptor.PermissionInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <!-- 配置拦截器作用的路径 -->
+            <mvc:mapping path="/**"/>
+            <!--定义在<mvc:interceptor>元素中，表示匹配指定路径的请求才进行拦截-->
+            <bean class="interceptor.SafeInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+</beans>
